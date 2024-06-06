@@ -1,6 +1,4 @@
 import type { Metadata } from "next";
-import Navigation from "@/app/_components/Navigation";
-import Logo from "@/app/_components/Logo";
 import "@/app/_styles/globals.css";
 
 import { Josefin_Sans } from "next/font/google";
@@ -28,7 +26,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${josefin.className} min-h-screen bg-primary-950 text-primary-100 antialiased`}
+        className={`${josefin.className} relative min-h-screen bg-primary-950 text-primary-100 antialiased`}
       >
         <Header />
 
