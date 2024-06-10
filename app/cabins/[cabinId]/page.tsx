@@ -2,6 +2,7 @@ import { getCabin } from "@/app/_lib/data-service";
 import { EyeSlashIcon, MapPinIcon, UsersIcon } from "@heroicons/react/24/solid";
 import { Metadata } from "next";
 import Image from "next/image";
+import { notFound } from "next/navigation";
 
 export async function generateMetadata({
   params,
@@ -22,7 +23,7 @@ export default async function Page({
 }) {
   const cabin = await getCabin(params.cabinId);
 
-  if (!cabin) return <div>no cabin found.</div>;
+  if (!cabin) notFound();
 
   const { id, name, maxCapacity, regularPrice, discount, image, description } =
     cabin;
