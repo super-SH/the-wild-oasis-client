@@ -1,8 +1,19 @@
 import { getCabin } from "@/app/_lib/data-service";
 import { EyeSlashIcon, MapPinIcon, UsersIcon } from "@heroicons/react/24/solid";
+import { Metadata } from "next";
 import Image from "next/image";
 
-// PLACEHOLDER DATA
+export async function generateMetadata({
+  params,
+}: {
+  params: { cabinId: number };
+}) {
+  const cabin = await getCabin(params.cabinId);
+
+  const name = cabin?.name ?? "";
+
+  return { title: `Cabin ${name}` } as Metadata;
+}
 
 export default async function Page({
   params,
