@@ -1,13 +1,14 @@
 import { PencilSquareIcon } from "@heroicons/react/24/solid";
 import { format, formatDistance, isPast, isToday, parseISO } from "date-fns";
 import DeleteReservation from "@/app/_components/DeleteReservation";
+import { BookingWithCabin } from "../types/collection";
 
-export const formatDistanceFromNow = (dateStr) =>
+export const formatDistanceFromNow = (dateStr: string) =>
   formatDistance(parseISO(dateStr), new Date(), {
     addSuffix: true,
   }).replace("about ", "");
 
-function ReservationCard({ booking }) {
+function ReservationCard({ booking }: { booking: BookingWithCabin }) {
   const {
     id,
     guestId,
@@ -25,7 +26,7 @@ function ReservationCard({ booking }) {
     <div className="flex border border-primary-800">
       <div className="relative aspect-square h-32">
         <img
-          src={image}
+          src={image ?? ""}
           alt={`Cabin ${name}`}
           className="border-r border-primary-800 object-cover"
         />
@@ -36,7 +37,7 @@ function ReservationCard({ booking }) {
           <h3 className="text-xl font-semibold">
             {numNights} nights in Cabin {name}
           </h3>
-          {isPast(new Date(startDate)) ? (
+          {isPast(new Date(startDate ?? "")) ? (
             <span className="flex h-7 items-center rounded-sm bg-yellow-800 px-3 text-xs font-bold uppercase text-yellow-200">
               past
             </span>
@@ -48,18 +49,18 @@ function ReservationCard({ booking }) {
         </div>
 
         <p className="text-lg text-primary-300">
-          {format(new Date(startDate), "EEE, MMM dd yyyy")} (
-          {isToday(new Date(startDate))
+          {format(new Date(startDate ?? ""), "EEE, MMM dd yyyy")} (
+          {isToday(new Date(startDate ?? ""))
             ? "Today"
-            : formatDistanceFromNow(startDate)}
-          ) &mdash; {format(new Date(endDate), "EEE, MMM dd yyyy")}
+            : formatDistanceFromNow(startDate ?? "")}
+          ) &mdash; {format(new Date(endDate ?? ""), "EEE, MMM dd yyyy")}
         </p>
 
         <div className="mt-auto flex items-baseline gap-5">
           <p className="text-xl font-semibold text-accent-400">${totalPrice}</p>
           <p className="text-primary-300">&bull;</p>
           <p className="text-lg text-primary-300">
-            {numGuests} guest{numGuests > 1 && "s"}
+            {numGuests} guest{numGuests && numGuests > 1 && "s"}
           </p>
           <p className="ml-auto text-sm text-primary-400">
             Booked {format(new Date(created_at), "EEE, MMM dd yyyy, p")}
