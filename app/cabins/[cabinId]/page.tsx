@@ -1,4 +1,4 @@
-import { getCabin } from "@/app/_lib/data-service";
+import { getCabin, getCabins } from "@/app/_lib/data-service";
 import { EyeSlashIcon, MapPinIcon, UsersIcon } from "@heroicons/react/24/solid";
 import { Metadata } from "next";
 import Image from "next/image";
@@ -14,6 +14,14 @@ export async function generateMetadata({
   const name = cabin?.name ?? "";
 
   return { title: `Cabin ${name}` } as Metadata;
+}
+
+export async function generateStaticParams() {
+  const cabins = await getCabins();
+
+  return cabins.map((cabin) => ({
+    cabindId: String(cabin.id),
+  }));
 }
 
 export default async function Page({
