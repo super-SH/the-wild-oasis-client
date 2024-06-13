@@ -13,9 +13,9 @@ const authConfig: NextAuthConfig = {
       return !!auth?.user;
     },
   },
-  // pages: {
-  //   signIn: "/login",
-  // },
+  pages: {
+    signIn: "/login",
+  },
 };
 
 export const {
