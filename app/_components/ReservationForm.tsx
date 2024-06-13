@@ -1,7 +1,8 @@
 import { Cabin } from "@/app/types/collection";
+import { User } from "next-auth";
+import Image from "next/image";
 
-function ReservationForm({ cabin }: { cabin: Cabin }) {
-  // CHANGE
+function ReservationForm({ cabin, user }: { cabin: Cabin; user: User }) {
   const { maxCapacity } = cabin;
 
   return (
@@ -9,16 +10,18 @@ function ReservationForm({ cabin }: { cabin: Cabin }) {
       <div className="flex items-center justify-between bg-primary-800 px-16 py-2 text-primary-300">
         <p>Logged in as</p>
 
-        {/* <div className='flex gap-4 items-center'>
-          <img
+        <div className="flex items-center gap-4">
+          <Image
             // Important to display google profile images
-            referrerPolicy='no-referrer'
-            className='h-8 rounded-full'
-            src={user.image}
-            alt={user.name}
+            referrerPolicy="no-referrer"
+            width={32}
+            height={32}
+            className="rounded-full object-cover"
+            src={user.image ?? ""}
+            alt={user.name ?? "user profile image"}
           />
           <p>{user.name}</p>
-        </div> */}
+        </div>
       </div>
 
       <form className="flex flex-col gap-5 bg-primary-900 px-16 py-10 text-lg">
