@@ -2,6 +2,7 @@
 
 import { Guest } from "@/app/types/collection";
 import { updateGuest } from "@/app/_lib/actions";
+import SubmitButton from "@/app/_components/SubmitButton";
 
 function UpdateProfileForm({
   children,
@@ -60,9 +61,7 @@ function UpdateProfileForm({
       </div>
 
       <div className="flex items-center justify-end gap-6">
-        <button className="bg-accent-500 px-8 py-4 font-semibold text-primary-800 transition-all hover:bg-accent-600 disabled:cursor-not-allowed disabled:bg-gray-500 disabled:text-gray-300">
-          Update profile
-        </button>
+        <SubmitButton pendingLabel="Updating...">Update profile</SubmitButton>
       </div>
     </form>
   );
