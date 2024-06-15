@@ -1,6 +1,11 @@
 "use client";
 
-import { isWithinInterval } from "date-fns";
+import {
+  differenceInDays,
+  isPast,
+  isSameDay,
+  isWithinInterval,
+} from "date-fns";
 import { DateRange, DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import { Cabin, Settings } from "@/app/types/collection";
@@ -12,8 +17,8 @@ function isAlreadyBooked(
   datesArr: Date[],
 ) {
   return (
-    range.from &&
-    range.to &&
+    range?.from &&
+    range?.to &&
     datesArr.some((date) =>
       isWithinInterval(date, { start: range.from, end: range.to }),
     )
@@ -30,11 +35,14 @@ function DateSelector({
   cabin: Cabin;
 }) {
   const { range, setRange, resetRange } = useReservation();
-  // CHANGE
-  const regularPrice = 23;
-  const discount = 23;
-  const numNights = 23;
-  const cabinPrice = 23;
+
+  const displayRange = (
+    isAlreadyBooked(range, bookedDates) ? {} : range
+  ) as DateRange;
+
+  const { regularPrice, discount } = cabin;
+  const numNights = differenceInDays(displayRange?.to, displayRange?.from);
+  const cabinPrice = numNights * (regularPrice - (discount ?? 0));
 
   const { minBookingLength, maxBookingLength } = settings;
 
@@ -42,7 +50,7 @@ function DateSelector({
     <div className="flex flex-col justify-between">
       <DayPicker
         onSelect={setRange}
-        selected={range}
+        selected={displayRange}
         className="place-self-center pt-12"
         mode="range"
         min={minBookingLength + 1}
@@ -52,12 +60,16 @@ function DateSelector({
         toYear={new Date().getFullYear() + 5}
         captionLayout="dropdown"
         numberOfMonths={2}
+        disabled={(curDate) =>
+          isPast(curDate) ||
+          bookedDates.some((date) => isSameDay(date, curDate))
+        }
       />
 
       <div className="flex h-[72px] items-center justify-between bg-accent-500 px-8 text-primary-800">
         <div className="flex items-baseline gap-6">
           <p className="flex items-baseline gap-2">
-            {discount > 0 ? (
+            {discount && discount > 0 ? (
               <>
                 <span className="text-2xl">${regularPrice - discount}</span>
                 <span className="font-semibold text-primary-700 line-through">
